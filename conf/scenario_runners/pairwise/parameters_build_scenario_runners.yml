@@ -1,0 +1,11 @@
+# This is a boilerplate parameters config generated for pipeline 'build_scenario_runners'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+scenario_params:
+  name: pairwise
+  n_runs_per_pair: 10
+  n_samples_per_run: 1
+  n_vehs_per_fleet: 5

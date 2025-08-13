@@ -1,0 +1,17 @@
+voc_id,voc_name,voc_category
+1,Telecom,Utility
+2,Beverage Delivery,Delivery
+3,Warehouse Delivery,Warehouse
+4,Parcel Delivery,Delivery
+5,School Bus,School Bus
+6,Linen Delivery,Delivery
+7,Refuse Pickup,Refuse
+8,Long Haul,Long Haul
+10,Mass Transit,Mass Transit
+11,Towing,Towing
+12,Grocery Delivery,Delivery
+13,Port Drayage,Port Drayage
+14,Food Delivery,Delivery
+15,Snow Plow,Snow Plow
+16,Utility,Utility
+18,Local Delivery,Delivery

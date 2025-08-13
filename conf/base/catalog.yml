@@ -1,0 +1,257 @@
+# Here you can define all your data sets by using simple YAML syntax.
+#
+# Documentation for this file format can be found in "The Data Catalog"
+# Link: https://docs.kedro.org/en/stable/data/data_catalog.html
+
+fleet_dna_composite:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/FleetDNA/data_for_fleet_dna_composite_data.csv
+
+fleet_dna_vocations:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/category_assignments/vocations.csv
+
+role_energy_readings:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/ROLE/energyreading.csv
+
+role_gps:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/ROLE/gps.csv
+
+role_classes:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/category_assignments/truck_class.csv
+
+### FleetDNA preprocessed datasets
+fleetdna_distances:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/fleetdna_distances.csv
+  save_args:
+    index: True
+
+fleetdna_stops:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/fleetdna_stops.csv
+  save_args:
+    index: True
+
+fleetdna_times:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/fleetdna_times.csv
+  save_args:
+    index: True
+
+### RoLE preprocessed datasets
+energy_sessions:
+  type: pandas.FeatherDataset
+  filepath: data/02_intermediate/energy_sessions.feather
+
+energy_consumption:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/energy_consumption_per_mile.csv
+  save_args:
+    index: True
+
+### Final datasets for training
+fleetdna_vehicle_days:
+  type: pandas.CSVDataset
+  filepath: data/04_feature/fleetdna_vehicle_days.csv
+
+### Slurm batch scripts
+scenario_slurm_script:
+  type: partitions.PartitionedDataset
+  path: src/e_depot_strategies/scenario_runners
+  dataset:
+    type: text.TextDataset
+  filename_suffix: ".sh"
+
+### Simulation intermediates
+### Commented out to prevent crosstalk between parallel runs on Sherlock
+# vehicle_days_with_energy:
+#   type: pandas.CSVDataset
+#   filepath: data/03_primary/veh_days_with_energy.csv
+
+# selected_vehicle_days:
+#   type: pandas.CSVDataset
+#   filepath: data/03_primary/voc_fleet_selections.csv
+
+# depot_profiles_shared:
+#   type: pandas.FeatherDataset
+#   filepath: data/07_model_output/depot_profiles_shared.feather
+#   load_args:
+#     use_threads: True
+
+# depot_summaries_shared:
+#   type: pandas.CSVDataset
+#   filepath: data/07_model_output/depot_summaries_shared.csv
+#   save_args:
+#     index: True
+
+# depot_profiles_private:
+#   type: pandas.FeatherDataset
+#   filepath: data/07_model_output/depot_profiles_private.feather
+#   load_args:
+#     use_threads: True
+
+# depot_summaries_private:
+#   type: pandas.CSVDataset
+#   filepath: data/07_model_output/depot_summaries_private.csv
+#   save_args:
+#     index: True
+
+# depot_profiles_contrast:
+#   type: pandas.FeatherDataset
+#   filepath: data/07_model_output/depot_profiles_contrast.feather
+#   load_args:
+#     use_threads: True
+
+# depot_summaries_contrast:
+#   type: pandas.CSVDataset
+#   filepath: data/07_model_output/depot_summaries_contrast.csv
+#   save_args:
+#     index: True
+
+### Scenario configurations
+scenario_configs:
+  type: partitions.PartitionedDataset
+  path: conf/scenarios
+  dataset:
+    type: yaml.YAMLDataset
+  filename_suffix: ".yml"
+
+### Scenario partitioned outputs
+selected_vehicle_days_part:
+  type: partitions.PartitionedDataset
+  path: data/07_model_output/selected_vehicle_days
+  dataset:
+    type: pandas.FeatherDataset
+    load_args:
+      use_threads: True
+  filename_suffix: ".feather"
+
+depot_profiles_part:
+  type: partitions.PartitionedDataset
+  path: data/07_model_output/depot_profiles
+  dataset:
+    type: pandas.FeatherDataset
+    load_args:
+      use_threads: True
+  filename_suffix: ".feather"
+
+depot_summaries_part:
+  type: partitions.PartitionedDataset
+  path: data/07_model_output/depot_summaries
+  dataset:
+    type: pandas.FeatherDataset
+    load_args:
+      use_threads: True
+  filename_suffix: ".feather"
+
+### Summary tables and plots
+counterfact_profiles_part:
+  type: partitions.PartitionedDataset
+  path: data/08_reporting/avg_power_over_time/
+  dataset:
+    type: matplotlib.MatplotlibWriter
+    save_args:
+      format: svg
+  filename_suffix: ".svg"
+
+scenario_contrasts:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/scenario_contrasts.csv
+  save_args:
+    index: True
+  load_args:
+    header:
+      - 0
+      - 1
+    index_col:
+      - 0
+      - 1
+      - 2
+
+cost_per_kwh_pct_diff:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/cost_per_kwh_pct_diff.png
+
+utilization_valet_impact:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/utilization_diff_valet_impact.png
+
+upfront_cost_valet_impact:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/upfront_cost_pct_diff_valet_impact.png
+
+max_observed_power_pct_diff:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/max_observed_power_pct_diff.png
+
+installed_capacity_pct_diff:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/installed_capacity_pct_diff.png
+
+cost_share_valet_impact:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/cost_share_valet_impact.png
+
+cost_reduce_vs_capacity_savings:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/cost_reduce_vs_capacity_savings.png
+  save_args:
+    bbox_inches: tight
+
+plug_contribs:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/plug_contribs.png
+  save_args:
+    bbox_inches: tight
+
+cost_contribs:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/cost_contribs.png
+  save_args:
+    bbox_inches: tight
+
+utilization_dists:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/utilization_dists.png
+  save_args:
+    bbox_inches: tight
+
+sharing_cost_by_pair:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/sharing_cost_by_pair.png
+  save_args:
+    bbox_inches: tight
+
+load_duration_by_strategy:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/load_duration_by_strategy.png
+  save_args:
+    bbox_inches: tight
+
+availability:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/availability.png
+  save_args:
+    bbox_inches: tight
+
+consumption_by_weight_class_group:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/consump_by_weight_class_group.png
+  save_args:
+    bbox_inches: tight
+
+capacity_savings_by_fleet_size:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/capacity_savings_by_fleet_size.png
+  save_args:
+    bbox_inches: tight
+
+distance_by_vocation:
+  type: matplotlib.MatplotlibWriter
+  filepath: data/08_reporting/distance_by_vocation.png
+  save_args:
+    bbox_inches: tight

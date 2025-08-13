@@ -1,0 +1,36 @@
+# This is a boilerplate parameters config generated for pipeline 'build_scenario_runners'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+slurm_command: sbatch # Valid values are "sbatch" and "salloc"
+
+slurm_resources:
+  partition: serc
+  ntasks: 2 # I believe that this is what we need for SequentialRunner, while ParallelRunner needs n_examples + 1
+  ntasks-per-node: 2 # Keeps all of the tasks and CPUs on the same node, thus accessible by Gurobi
+  cpus-per-task: 16 # Each Gurobi thread needs one CPU to execute
+  mem: 64GB # Increasing memory, since I've had some memory errors
+  gpus: 0
+  time: 2-00:00 # Reducing time requirement, since with more processors we're going faster.
+  array: 0-41
+
+scenario_params:
+  name: quads_big
+  n_runs_per_pair: 1
+  n_samples_per_run: 1
+  n_vehs_per_fleet: 15
+
+optimizer:
+  verbose: True
+  solver: GUROBI
+  warm_start: True
+  use_personal_license: False
+  GUROBI:
+    MIPFocus: 2
+    # ConcurrentMIP: 2
+    Threads: 32
+    TimeLimit: 129600 # Time limit of 36 hrs (in seconds)
+    MIPGap: 0.01 # 1% optimality gap
+    Presolve: 2

@@ -1,0 +1,35 @@
+# This is a boilerplate parameters config generated for pipeline 'summarize'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+pca_options:
+  n_components: 2
+  smoothing_span: 10
+  scale: False
+
+load_profile_plotting_options:
+  scenario_plot_thresh: 7
+  group_cols:
+    - scen_id
+
+summarize_partitions:
+  include_partitions:
+    - "single_vocation_paired"
+    - "pairwise_10vehs"
+  level_names:
+    - run_name
+    - voc_set
+    - veh_set
+    - valet_set
+    - task_id
+
+contrast:
+  group_cols:
+    - "voc_category_i"
+    - "voc_category_j"
+    - "veh_scen_id"
+    - "task_id"
+    - "shar_priv"
+    - "valet_set"

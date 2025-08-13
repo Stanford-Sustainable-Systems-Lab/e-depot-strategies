@@ -1,0 +1,110 @@
+# This is a boilerplate parameters config generated for pipeline 'simulate'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+energy_reqd:
+  seed: 42
+
+veh_day_sets:
+  n_samples: 1
+  n_vehs_per_fleet: 5
+  voc_fractions:
+    fleet_0:
+      delivery: 0
+      mass_transit: 0
+      refuse: 0
+      school_bus: 1
+      utility: 0
+      warehouse: 0
+    fleet_1:
+      delivery: 1
+      mass_transit: 0
+      refuse: 0
+      school_bus: 0
+      utility: 0
+      warehouse: 0
+  grp_cols:
+    - voc_category
+  seed: 42
+  verbose: False
+
+depot_power_options:
+  timestep_freq: 15T
+
+optimizer:
+  verbose: True
+  solver: GUROBI
+  warm_start: True
+  use_personal_license: True
+  GUROBI:
+    MIPFocus: 2
+    TimeLimit: 82800 # Time limit of 23 hrs (in seconds)
+    MIPGap: 0.01 # 1% optimality gap
+    Presolve: 2
+
+depot_costs:
+  time_horizon_yrs: 5
+  discount_rate_pct: 7 
+  plug_power_kw:
+    low: 50
+    med: 150
+    high: 350
+  plug_cost_dollars:
+    low: 30000
+    med: 94000
+    high: 154000
+  valet_cost_per_hr: 18.63
+  power_change_penalty: 0
+  electric_rate: # loosely mimics the OpenEI rates database structure
+    fixedmonthlycharge: 0
+    flatdemandunit: kW
+    flatdemandcost: 1.72
+    energyrateunit: kWh
+    energyratestructure:
+      - 0.15928
+      - 0.18194
+      - 0.39082
+    energyweekdayschedule:
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 1
+      - 0
+      - 0
+      - 0
+      - 0
+      - 0
+      - 1
+      - 1
+      - 2
+      - 2
+      - 2
+      - 2
+      - 2
+      - 1
+      - 1
+      - 1
+  valet_shifts: # All shifts must have equal length, or the valet shift constraints will fail
+    end_hrs:
+      3: 8
+      1: 16
+      2: 24
+    max_count: 100
+    min_count: 1
+
+depot_power_grp_cols:
+  shared:
+    - scen_id
+  private:
+    - scen_id
+    - fleet_id
+
+results_partition:
+  dir: test/test # Don't include suffix, since this is handled by the catalog.yml

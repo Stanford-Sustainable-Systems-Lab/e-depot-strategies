@@ -1,0 +1,25 @@
+# This is a boilerplate parameters config generated for pipeline 'build_scenario_runners'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+slurm_resources:
+  partition: serc
+  mem: 128GB # Increasing memory, since I've had some memory errors
+  ntasks: 2 # I believe that this is what we need for SequentialRunner, while ParallelRunner needs n_examples + 1
+  cpus-per-task: 32 # Upping cpus per task since we can't parallelize as wide between tasks
+  gpus: 0
+  time: 1-00:00 # Reducing time requirement, since with more processors we're going faster.
+  array: 0-20%2 # 2 at a time is enforced by Gurobi license
+
+scenario_params:
+  name: depot_size
+  n_runs_per_pair: 1
+  n_samples_per_run: 1
+  n_vehs_per_fleet: 20
+
+depot_power_grp_cols:
+  private:
+    - scen_id
+    - fleet_id

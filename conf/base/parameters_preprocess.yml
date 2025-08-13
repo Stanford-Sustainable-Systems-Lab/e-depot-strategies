@@ -1,0 +1,48 @@
+# This is a boilerplate parameters config generated for pipeline 'preprocess'
+# using Kedro 0.18.13.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/0.18.13/configuration/parameters.html
+
+consump_rate:
+  coord_ref_sys: 4326
+  allow_sess_idle_time_hrs: 2
+  min_drive_sess_length_hrs: 0.05
+  max_drive_sess_length_hrs: 24
+  min_drive_sess_dist_miles: 0.5
+
+charge_sessions:
+  max_charge_gap_secs: 3600 # Longest gap in a charging session allowable before a new session is counted
+  truck_ids_to_drop:
+    - 8
+  max_possible_charger_power_kw: 37
+
+mark_classes:
+  keep_cols_classes:
+    - id
+    - class_id
+  merge_cols:
+    consump: truck_id
+    classes: id
+
+fleetdna_times:
+  total_hrs: 24
+
+weight_corresp:
+  weight_class_group:
+    id_columns:
+      - class_id
+    values:
+      2: light
+      3: light
+      4: medium
+      5: medium
+      6: medium
+      7: heavy
+      8: heavy
+
+filter_consumps:
+  grp_cols:
+    - weight_class_group
+  consump_col: consump_kwh_per_mi
+  iqr_mult: 1.5

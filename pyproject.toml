@@ -1,0 +1,81 @@
+[project]
+name = "e-depot-strategies"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Fletcher Passow", email = "fletcherpassow@icloud.com" }
+]
+dependencies = [
+    "cvxpy==1.3.2",
+    "geopandas==0.13.2",
+    "gurobipy==10.0.3",
+    "ipykernel>=6.29.5",
+    "pandas==2.1.0",
+    "pyarrow==13.0.0",
+    "scikit-learn==1.3.0",
+    "seaborn==0.13.0",
+    "tqdm==4.66.1",
+    "kedro==0.19.6",
+    "kedro-viz>=10.2.0",
+    "kedro-datasets[pandas.CSVDataset,pandas.FeatherDataset,matplotlib.MatplotlibWriter]>=1.0",
+    "kedro_telemetry>=0.4.0",
+    "scipy==1.13.1",
+    "numpy<2",
+]
+readme = "README.md"
+requires-python = ">= 3.10"
+
+[project.scripts]
+e-depot-strategies = "e_depot_strategies.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+managed = true
+dev-dependencies = [
+    "docutils<0.18.0",
+    "sphinx~=3.4.3",
+    "sphinx_rtd_theme==0.5.1",
+    "nbsphinx==0.8.1",
+    "nbstripout~=0.4",
+    "sphinx-autodoc-typehints==1.11.1",
+    "sphinx_copybutton==0.3.1",
+    "ipykernel>=5.3, <7.0",
+    "Jinja2<3.1.0",
+    "myst-parser~=0.17.2",
+    "pre-commit>=3.7.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/e_depot_strategies"]
+
+[tool.kedro]
+package_name = "e_depot_strategies"
+project_name = "Electrified Depot Strategies"
+kedro_init_version = "0.19.6"
+
+[tool.pytest.ini_options]
+addopts = """
+--cov-report term-missing \
+--cov src/e_depot_strategies -ra"""
+
+[tool.coverage.report]
+fail_under = 0
+show_missing = true
+exclude_lines = ["pragma: no cover", "raise NotImplementedError"]
+
+[tool.ruff.lint]
+select = [
+    "F",  # Pyflakes
+    "E",  # Pycodestyle
+    "W",  # Pycodestyle
+    "UP",  # pyupgrade
+    "I",  # isort
+    "PL", # Pylint
+]
+ignore = ["E501"]  # Don't report line-too-long
